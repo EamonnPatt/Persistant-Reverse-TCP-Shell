@@ -1,4 +1,4 @@
-##PENTESTING TOOL##
+## <span style="color: red;">PENTESTING TOOL</span>
 
 # Windows Persistent Reverse Shell via USB
 
